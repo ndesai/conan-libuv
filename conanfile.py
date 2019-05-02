@@ -22,6 +22,7 @@ class LibuvConan(ConanFile):
     default_options = {"shared": False}
     _source_subfolder = "source_subfolder"
     source_subfolder = "source_subfolder"
+    build_subfolder = "build_subfolder"
 
     def configure(self):
         del self.settings.compiler.libcxx
@@ -45,7 +46,6 @@ class LibuvConan(ConanFile):
     def build(self):
         cmake = self.configure_cmake()
         cmake.build()
-
 
     def package(self):
         self.copy(pattern="LICENSE*", dst="licenses", src=self._source_subfolder)
