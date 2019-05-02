@@ -29,10 +29,7 @@ class LibuvConan(ConanFile):
             raise ConanInvalidConfiguration("Visual Studio >= 14 (2015) is required")
 
     def source(self):
-        sha256 = "4afcdc84cd315b77c8e532e7b3fde43d536af0e2e835eafbd0e75518ed26dbed"
-        tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version), sha256=sha256)
-        extracted_folder = self.name + "-" + self.version
-        os.rename(extracted_folder, self._source_subfolder)
+        self.run("git clone -b v1.x https://github.com/maingig/libuv {0}".format(_source_subfolder))
 
     def build_requirements(self):
         self.build_requires("gyp_installer/20190423@bincrafters/stable")
@@ -60,7 +57,7 @@ class LibuvConan(ConanFile):
             if self.options.shared:
                 self.copy(pattern="*.dll", dst="bin", src=bin_dir, keep_path=False)
             self.copy(pattern="*.lib", dst="lib", src=bin_dir, keep_path=False)
-        elif str(self.settings.os) in ["Linux", "Android"]:
+        elif str(self.settings.os) in ["Linux", "Android", "QNX"]:
             if self.options.shared:
                 self.copy(pattern="libuv.so.1", dst="lib", src=os.path.join(bin_dir, "lib"),
                           keep_path=False)
