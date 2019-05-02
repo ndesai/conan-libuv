@@ -40,7 +40,7 @@ class LibuvConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure()
+        cmake.configure(source_folder=self.source_subfolder, build_folder=self.build_subfolder)
         cmake.build()
 
     def package(self):
