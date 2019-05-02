@@ -21,6 +21,7 @@ class LibuvConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = {"shared": False}
     _source_subfolder = "source_subfolder"
+    source_subfolder = "source_subfolder"
 
     def configure(self):
         del self.settings.compiler.libcxx
@@ -35,19 +36,16 @@ class LibuvConan(ConanFile):
         self.build_requires("gyp_installer/20190423@bincrafters/stable")
         if not tools.which("ninja"):
             self.build_requires("ninja_installer/1.8.2@bincrafters/stable")
+                
+    def configure_cmake(self):
+        cmake = CMake(self)
+        cmake.configure()
+        return cmake
 
     def build(self):
-        with tools.chdir(self._source_subfolder):
-            env_vars = dict()
-            if self.settings.compiler == "Visual Studio":
-                env_vars["GYP_MSVS_VERSION"] = {"14": "2015",
-                                                "15": "2017"}.get(str(self.settings.compiler.version))
-            with tools.environment_append(env_vars):
-                target_arch = {"x86": "ia32", "x86_64": "x64"}.get(str(self.settings.arch))
-                uv_library = "shared_library" if self.options.shared else "static_library"
-                self.run("python gyp_uv.py -f ninja -Dtarget_arch=%s -Duv_library=%s"
-                         % (target_arch, uv_library))
-                self.run("ninja -C out/%s" % self.settings.build_type)
+        cmake = self.configure_cmake()
+        cmake.build()
+
 
     def package(self):
         self.copy(pattern="LICENSE*", dst="licenses", src=self._source_subfolder)
