@@ -37,14 +37,10 @@ class LibuvConan(ConanFile):
         self.build_requires("gyp_installer/20190423@bincrafters/stable")
         if not tools.which("ninja"):
             self.build_requires("ninja_installer/1.8.2@bincrafters/stable")
-                
-    def configure_cmake(self):
-        cmake = CMake(self)
-        cmake.configure()
-        return cmake
 
     def build(self):
-        cmake = self.configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
     def package(self):
