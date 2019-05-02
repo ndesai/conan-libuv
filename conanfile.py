@@ -31,7 +31,7 @@ class LibuvConan(ConanFile):
             raise ConanInvalidConfiguration("Visual Studio >= 14 (2015) is required")
 
     def source(self):
-        self.run("git clone -b v1.x https://github.com/ndesai/libuv {0}".format(self._source_subfolder))
+        self.run("git clone -b v1.x https://github.com/maingig/libuv {0}".format(self._source_subfolder))
 
     def build_requirements(self):
         self.build_requires("gyp_installer/20190423@bincrafters/stable")
