@@ -52,12 +52,7 @@ class LibuvConan(ConanFile):
                 self.copy(pattern="*.dll", dst="bin", src=bin_dir, keep_path=False)
             self.copy(pattern="*.lib", dst="lib", src=bin_dir, keep_path=False)
         elif str(self.settings.os) in ["Linux", "Android", "QNX"]:
-            if self.options.shared:
-                self.copy(pattern="libuv.so.1", dst="lib", src=os.path.join(bin_dir, "lib"),
-                          keep_path=False)
-                lib_dir = os.path.join(self.package_folder, "lib")
-                os.symlink("libuv.so.1", os.path.join(lib_dir, "libuv.so"))
-            else:
+            if not self.options.shared:
                 self.copy(pattern="*.a", dst="lib", src=bin_dir, keep_path=False)
         elif str(self.settings.os) in ["Macos", "iOS", "watchOS", "tvOS"]:
             if self.options.shared:
