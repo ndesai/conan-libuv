@@ -44,25 +44,8 @@ class LibuvConan(ConanFile):
         cmake.build()
 
     def package(self):
-        self.copy(pattern="LICENSE*", dst="licenses", src=self._source_subfolder)
-        self.copy(pattern="*.h", dst="include", src=os.path.join(self._source_subfolder, "include"))
-        bin_dir = os.path.join(self._source_subfolder, "out", str(self.settings.build_type))
-        if self.settings.os == "Windows":
-            if self.options.shared:
-                self.copy(pattern="*.dll", dst="bin", src=bin_dir, keep_path=False)
-            self.copy(pattern="*.lib", dst="lib", src=bin_dir, keep_path=False)
-        elif str(self.settings.os) in ["Linux", "Android", "QNX"]:
-            if self.options.shared:
-                self.copy(pattern="libuv.so", dst="lib", src=os.path.join(bin_dir, "lib"),
-                          keep_path=False)
-                lib_dir = os.path.join(self.package_folder, "lib")
-            else:
-                self.copy(pattern="*.a", dst="lib", src=bin_dir, keep_path=False)
-        elif str(self.settings.os) in ["Macos", "iOS", "watchOS", "tvOS"]:
-            if self.options.shared:
-                self.copy(pattern="*.dylib", dst="lib", src=bin_dir, keep_path=False)
-            else:
-                self.copy(pattern="*.a", dst="lib", src=bin_dir, keep_path=False)
+        cmake = self.configure_cmake()
+        cmake.install()
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
