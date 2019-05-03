@@ -38,9 +38,13 @@ class LibuvConan(ConanFile):
         if not tools.which("ninja"):
             self.build_requires("ninja_installer/1.8.2@bincrafters/stable")
 
-    def build(self):
+    def configure_cmake(self):
         cmake = CMake(self)
         cmake.configure(source_folder=self.source_subfolder, build_folder=self.build_subfolder)
+        return cmake
+    
+    def build(self):
+        cmake = self.configure_cmake()
         cmake.build()
 
     def package(self):
