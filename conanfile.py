@@ -75,10 +75,9 @@ class LibuvConan(ConanFile):
                 self.copy(pattern="*.a", dst="lib", src=bin_dir, keep_path=False)
 
     def package_info(self):
+        self.cpp_info.libs = tools.collect_libs(self)
         if self.settings.os == "Windows":
             self.cpp_info.libs = ["libuv.dll.lib" if self.options.shared else "libuv"]
             self.cpp_info.libs.extend(["Psapi", "Ws2_32", "Iphlpapi", "Userenv"])
-        else:
-            self.cpp_info.libs = tools.collect_libs(self)
-        if self.settings.os == "Linux":
+        elif self.settings.os == "Linux":
             self.cpp_info.libs.append("pthread")
