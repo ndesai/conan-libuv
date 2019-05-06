@@ -33,11 +33,6 @@ class LibuvConan(ConanFile):
     def source(self):
         self.run("git clone -b v1.x https://github.com/maingig/libuv {0}".format(self._source_subfolder))
 
-    def build_requirements(self):
-        self.build_requires("gyp_installer/20190423@bincrafters/stable")
-        if not tools.which("ninja"):
-            self.build_requires("ninja_installer/1.8.2@bincrafters/stable")
-
     def configure_cmake(self):
         cmake = CMake(self)
         cmake.configure(source_folder=self.source_subfolder, build_folder=self.build_subfolder)
