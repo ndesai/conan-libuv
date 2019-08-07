@@ -8,7 +8,7 @@ from conans.errors import ConanInvalidConfiguration
 
 class LibuvConan(ConanFile):
     name = "libuv"
-    version = "1.27.0"
+    version = "1.30.1"
     description = "Cross-platform asynchronous I/O "
     url = "https://github.com/bincrafters/conan-libuv"
     homepage = "https://github.com/libuv/libuv"
@@ -34,7 +34,7 @@ class LibuvConan(ConanFile):
         self.build_requires("gyp_installer/20190423@bincrafters/stable")
             
     def source(self):
-        self.run("git clone -b v1.x https://github.com/maingig/libuv {0}".format(self._source_subfolder))
+        self.run("git clone -b stable/{0} https://github.com/maingig/libuv {1}".format(self.version, self._source_subfolder))
 
     def configure_cmake(self):
         cmake = CMake(self)
