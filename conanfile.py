@@ -10,7 +10,7 @@ class LibuvConan(ConanFile):
     name = "libuv"
     version = "1.30.1"
     description = "Cross-platform asynchronous I/O "
-    url = "https://github.com/bincrafters/conan-libuv"
+    url = "https://github.com/maingig/conan-libuv"
     homepage = "https://github.com/libuv/libuv"
     author = "Bincrafters <bincrafters@gmail.com>"
     topics = ("conan", "libuv", "io", "async", "event")
@@ -18,8 +18,14 @@ class LibuvConan(ConanFile):
     exports = ["LICENSE.md"]
     settings = "os", "arch", "compiler", "build_type"
     generators = "cmake"
-    options = {"shared": [True, False]}
-    default_options = {"shared": False}
+    options = {
+        "shared": [True, False],
+        "fPIC": [True, False],
+    }
+    default_options = {
+        'shared': False,
+        'fPIC': True,
+    }
     _source_subfolder = "source_subfolder"
     source_subfolder = "source_subfolder"
     build_subfolder = "build_subfolder"
@@ -35,6 +41,8 @@ class LibuvConan(ConanFile):
 
     def configure_cmake(self):
         cmake = CMake(self)
+        cmake.definitions["UV_SHARED"] = self.options.shared
+        cmake.definitions["UV_STATIC"] = not self.options.shared
         cmake.configure(source_folder=self.source_subfolder, build_folder=self.build_subfolder)
         return cmake
 
