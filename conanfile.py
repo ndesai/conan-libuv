@@ -61,3 +61,6 @@ class LibuvConan(ConanFile):
             self.cpp_info.libs.extend(["Psapi", "Ws2_32", "Iphlpapi", "Userenv"])
         elif self.settings.os == "Linux":
             self.cpp_info.libs.append("pthread")
+        elif self.settings.os == "QNX":
+            self.cpp_info.libs.extend(['socket'])
+
