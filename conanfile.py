@@ -10,7 +10,7 @@ class LibuvConan(ConanFile):
     name = "libuv"
     version = "1.30.1"
     description = "Cross-platform asynchronous I/O "
-    url = "https://github.com/maingig/conan-libuv"
+    url = "https://github.com/maingig/libuv.git"
     homepage = "https://github.com/libuv/libuv"
     author = "Bincrafters <bincrafters@gmail.com>"
     topics = ("conan", "libuv", "io", "async", "event")
@@ -37,7 +37,7 @@ class LibuvConan(ConanFile):
             raise ConanInvalidConfiguration("Visual Studio >= 14 (2015) is required")
 
     def source(self):
-        self.run("git clone -b stable/{0} https://github.com/maingig/libuv {1}".format(self.version, self._source_subfolder))
+        self.run("git clone -b stable/{0} {1} {2}".format(self.version, self.url, self._source_subfolder))
 
     def configure_cmake(self):
         cmake = CMake(self)
